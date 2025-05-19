@@ -13,6 +13,9 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 
 Route::get('/search-employees', [EmployeeController::class, 'search']);
 
+Route::post('/aanvraag', [DashboardController::class, 'storeRequest'])->name('storeRequest');
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

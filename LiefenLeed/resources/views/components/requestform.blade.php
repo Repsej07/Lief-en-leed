@@ -3,7 +3,8 @@
         <h1 class="text-2xl font-bold">Lief en leed Aanvraag</h1>
     </div>
     <div id="forms">
-        <form action="" method="post">
+        <form action="{{route(name: 'storeRequest')}}" method="POST">
+            @csrf
             <div class="flex flex-row items-center justify-center space-x-8">
                 <div class="flex flex-col items-center">
                     <label for="name" class="mb-2 text-black font-bold">
@@ -11,17 +12,17 @@
                     </label>
                     <div class="relative w-[24em]">
                         <input type="text" name="name" id="name" class="p-2 rounded-md w-full"
-                            autocomplete="off">
+                            autocomplete="off" required>
                         <div id="nameList" class="bg-white border rounded shadow-md absolute z-10 mt-1 w-full hidden">
                         </div>
                     </div>
 
                 </div>
                 <div class="flex flex-col items-center">
-                    <label for="dropdown" class="mb-2 font-bold">Selecteer een gebeurtenis*</label>
-                    <select name="dropdown" id="" class="p-2 rounded-md w-[24em]">
+                    <label for="type" class="mb-2 font-bold">Selecteer een gebeurtenis*</label>
+                    <select name="type" id="type" class="p-2 rounded-md w-[24em]" required>
                         @foreach ($gebeurtenissen as $gebeurtenis)
-                            <option value="{{ $gebeurtenis->id }}">{{ $gebeurtenis->type }}</option>
+                            <option value="{{ $gebeurtenis->type }}">{{ $gebeurtenis->type }}</option>
                         @endforeach
                     </select>
                 </div>
