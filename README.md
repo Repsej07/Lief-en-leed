@@ -45,7 +45,6 @@ Automatiseren van het aanvraagproces, automatische controles en betalingen om ad
 - Digitaal aanvraagformulier
 - Geautomatiseerd controlesysteem voor jubilea
 - Dashboard voor handmatige beoordeling (ziektegevallen)
-- Mollie-koppeling voor betalingen
 - Rapportagemodule (inzichten in aanvragen & betalingen)
 
 ## 8. Planning
