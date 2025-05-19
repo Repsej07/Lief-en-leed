@@ -1,11 +1,13 @@
 <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 max-w-7xl">
-
+    <div class="flex justify-center items-center mb-4">
+        <h1 class="text-2xl font-bold">Lief en leed Aanvraag</h1>
+    </div>
     <div id="forms">
         <form action="" method="post">
             <div class="flex flex-row items-center justify-center space-x-8">
                 <div class="flex flex-col items-center">
                     <label for="name" class="mb-2 text-black font-bold">
-                        Naam Werknemer
+                        Naam Werknemer*
                     </label>
                     <div class="relative w-[24em]">
                         <input type="text" name="name" id="name" class="p-2 rounded-md w-full"
@@ -16,7 +18,7 @@
 
                 </div>
                 <div class="flex flex-col items-center">
-                    <label for="dropdown" class="mb-2 font-bold">Selecteer een gebeurtenis</label>
+                    <label for="dropdown" class="mb-2 font-bold">Selecteer een gebeurtenis*</label>
                     <select name="dropdown" id="" class="p-2 rounded-md w-[24em]">
                         @foreach ($gebeurtenissen as $gebeurtenis)
                             <option value="{{ $gebeurtenis->id }}">{{ $gebeurtenis->type }}</option>
@@ -44,11 +46,11 @@
 
 </div>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         const nameInput = document.getElementById('name');
         const nameList = document.getElementById('nameList');
 
-        nameInput.addEventListener('input', function () {
+        nameInput.addEventListener('input', function() {
             const query = this.value;
 
             if (query.length > 0) {
@@ -58,7 +60,8 @@
                         let output = '';
                         if (data.length > 0) {
                             data.forEach(employee => {
-                                output += `<div class="p-2 hover:bg-blue-100 cursor-pointer" data-name="${employee.name}">${employee.name}</div>`;
+                                output +=
+                                    `<div class="p-2 hover:bg-blue-100 cursor-pointer" data-name="${employee.name}">${employee.name}</div>`;
                             });
                             nameList.innerHTML = output;
                             nameList.classList.remove('hidden');
@@ -68,7 +71,7 @@
 
                         // click event on options
                         document.querySelectorAll('#nameList div').forEach(item => {
-                            item.addEventListener('click', function () {
+                            item.addEventListener('click', function() {
                                 nameInput.value = this.dataset.name;
                                 nameList.classList.add('hidden');
                             });
@@ -80,11 +83,10 @@
         });
 
         // Close dropdown on outside click
-        document.addEventListener('click', function (e) {
+        document.addEventListener('click', function(e) {
             if (!nameInput.contains(e.target) && !nameList.contains(e.target)) {
                 nameList.classList.add('hidden');
             }
         });
     });
 </script>
-
