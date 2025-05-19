@@ -1,3 +1,4 @@
+
 <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 max-w-7xl">
 
     <div id="forms">
@@ -12,21 +13,9 @@
                 <div class="flex flex-col items-center">
                     <label for="dropdown" class="mb-2 font-bold">Selecteer een gebeurtenis</label>
                     <select name="dropdown" id="" class="p-2 rounded-md w-[24em]">
-                        <option value="ziek">Ziek</option>
-                        <option value="ziekte 3 maanden">Ziekte 3 maanden</option>
-                        <option value="ziekte 3 weken">Ziekte 3 weken</option>
-                        <option value="ziekte ziekenhuisopname">Ziekte ziekenhuisopname</option>
-                        <option value="huwelijk/geregistreerd partnerschap">Huwelijk/Geregistreerd Partnerschap</option>
-                        <option value="ontslag/fpu/pensionering">Ontslag/FPU/Pensionering</option>
-                        <option value="50e verjaardag">50e Verjaardag</option>
-                        <option value="65e verjaardag">65e Verjaardag</option>
-                        <option value="12,5 jaar huwelijk">12,5 Jaar Huwelijk</option>
-                        <option value="12,5 jaar ambtenaar">12,5 Jaar Ambtenaar</option>
-                        <option value="25 jaar huwelijk">25 Jaar Huwelijk</option>
-                        <option value="25 jaar ambtenaar">25 Jaar Ambtenaar</option>
-                        <option value="overlijden ambtenaar of huisgenoot">Overlijden Ambtenaar of Huisgenoot</option>
-                        <option value="40 jaar ambtenaar">40 Jaar Ambtenaar</option>
-                        <option value="40 jarig huwelijk">40 Jarig Huwelijk</option>
+                    @foreach ($gebeurtenissen as $gebeurtenis)
+                        <option value="{{ $gebeurtenis->id }}">{{ $gebeurtenis->type }}</option>
+                    @endforeach
                     </select>
                 </div>
 
