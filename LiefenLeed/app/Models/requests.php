@@ -12,6 +12,7 @@ class requests extends Model
     protected $fillable = [
        'type',
         'name',
+        'approved',
     ];
 
     public function user()

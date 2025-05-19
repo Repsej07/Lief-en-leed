@@ -12,6 +12,6 @@ class Gebeurtenissen extends Seeder
      */
     public function run(): void
     {
-
+        
     }
 }

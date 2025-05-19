@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('type');
             $table->timestamps();
+            $table->boolean('automatic')->default(false);
         });
         DB::table('gebeurtenissen')->insert([
             ['type' => 'Ziek'],
