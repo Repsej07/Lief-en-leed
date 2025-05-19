@@ -1,24 +1,19 @@
-<?php
-
+<?
 namespace App\View\Components;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class requestform extends Component
+class Requestform extends Component
 {
-    /**
-     * Create a new component instance.
-     */
-    public function __construct()
+    public $gebeurtenissen;
+
+    public function __construct($gebeurtenissen)
     {
-        //
+        $this->gebeurtenissen = $gebeurtenissen;
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     */
     public function render(): View|Closure|string
     {
         return view('components.requestform');

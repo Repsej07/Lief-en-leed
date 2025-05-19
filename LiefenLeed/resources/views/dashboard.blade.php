@@ -1,3 +1,4 @@
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -6,8 +7,7 @@
     </x-slot>
 
     <div class="flex justify-center items-center py-12">
-        <x-requestform>
-            <!-- Add your form content here -->
+        <x-requestform :gebeurtenissen="$gebeurtenissen">
         </x-requestform>
 
     </div>
