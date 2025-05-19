@@ -78,6 +78,18 @@ class DatabaseSeeder extends Seeder
             'date_of_marriage' => Carbon::now()->subWeek(),
             'date_of_death' => null
         ]);
+        $dateofRetirement = Carbon::now()->subWeek();
+        User::factory()->create([
+            'name' => 'retired',
+            'email' => 'retired@example.com',
+            'password' => Hash::make('liedenleed'),
+            'date_of_birth' => Carbon::now()->subYears(70)->format('Y-m-d'),
+            'date_of_employment' => Carbon::now()->subYears(40),
+            'date_of_retirement' => $dateofRetirement,
+            'end_of_employment' => $dateofRetirement,
+            'date_of_marriage' => Carbon::now()->subYears(30),
+            'date_of_death' => null
+        ]);
 
         User::factory(1000)->create();
     }
