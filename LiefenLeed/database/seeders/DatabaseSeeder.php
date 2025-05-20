@@ -90,6 +90,17 @@ class DatabaseSeeder extends Seeder
             'date_of_marriage' => Carbon::now()->subYears(30),
             'date_of_death' => null
         ]);
+        User::factory()->create([
+            'name' => '3weekssick',
+            'email' => '3weekssick@example.com',
+            'password' => Hash::make('liedenleed'),
+            'date_of_birth' => Carbon::now()->subYears(30)->format('Y-m-d'),
+            'date_of_employment' => Carbon::now()->subYears(12)->subMonths(6),
+            'end_of_employment' => null,
+            'date_of_retirement' => Carbon::now()->addYears(35), // retire at 65
+            'date_of_marriage' => Carbon::now()->subYears(20),
+            'date_of_death' => null
+        ]);
 
         User::factory(1000)->create();
     }
