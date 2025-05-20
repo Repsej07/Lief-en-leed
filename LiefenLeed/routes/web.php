@@ -19,8 +19,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/beheerder', [BeheerderController::class, 'index'])
-    ->middleware(['auth', 'is_admin'])
-    ->name('beheerder.index');
+Route::middleware(['auth', 'is_admin'])->group(function () {
+    Route::resource('beheerder', BeheerderController::class)
+        ->only(['index', 'create', 'store']);
+});
+
+Route::post('/beheerder', [BeheerderController::class, 'store'])->name('beheerder.store');
+Route::post('/beheerder/mark-not-sick', [BeheerderController::class, 'markNotSick'])->name('beheerder.markNotSick');
+
 
 require __DIR__.'/auth.php';
