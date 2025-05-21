@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\VerzuimControl;
 
 class BeheerderController extends Controller
 {
@@ -13,7 +14,8 @@ class BeheerderController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('beheerder.index', compact('users'));
+         $medicalChecks = VerzuimControl::with('user')->get();
+        return view('beheerder.index', compact('users' ,'medicalChecks'));
     }
 
     /**

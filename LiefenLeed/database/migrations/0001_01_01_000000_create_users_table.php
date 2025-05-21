@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('afdeling');
+            $table->string('afdeling')->nullable();
             $table->boolean('is_sick')->default(false);
             $table->date('sick_start_date')->nullable();
             $table->rememberToken();

@@ -1,31 +1,36 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VerzuimControlController;
 use App\Http\Controllers\BeheerderController;
-use App\Http\Middleware\IsAdmin;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+// Public routes
+Route::view('/', 'welcome');
+
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
+
+    // Alles onder de dashboard route is alleen toegankelijk voor admins
+Route::middleware(['auth', 'verified', 'is_admin'])->group(function () {
+    // Profile routes
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'edit'])->name('edit');
+        Route::patch('/', [ProfileController::class, 'update'])->name('update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
+    });
+
+    // Beheerder routes
+    Route::resource('beheerder', BeheerderController::class)->only(['index', 'create', 'store']);
+    Route::post('/beheerder/mark-not-sick', [BeheerderController::class, 'markNotSick'])->name('beheerder.markNotSick');
+
+    // VerzuimControle routes
+    Route::prefix('medical-checks')->name('medical-checks.')->group(function () {
+        Route::post('/', [VerzuimControlController::class, 'store'])->name('store');
+        Route::post('{medicalCheck}/approve', [VerzuimControlController::class, 'approve'])->name('approve');
+        Route::post('{medicalCheck}/disapprove', [VerzuimControlController::class, 'disapprove'])->name('disapprove');
+        Route::get('data', [VerzuimControlController::class, 'getMedicalChecks'])->name('data');
+    });
+
+    Route::get('/beheerder/index', [VerzuimControlController::class, 'index'])->name('beheerder.index');
 });
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-Route::middleware(['auth', 'is_admin'])->group(function () {
-    Route::resource('beheerder', BeheerderController::class)
-        ->only(['index', 'create', 'store']);
-});
-
-Route::post('/beheerder', [BeheerderController::class, 'store'])->name('beheerder.store');
-Route::post('/beheerder/mark-not-sick', [BeheerderController::class, 'markNotSick'])->name('beheerder.markNotSick');
-
-
 require __DIR__.'/auth.php';

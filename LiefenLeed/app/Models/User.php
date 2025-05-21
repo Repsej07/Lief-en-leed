@@ -48,4 +48,8 @@ class User extends Authenticatable
             'is_sick' => 'boolean',
         ];
     }
+        public function medicalChecks()
+    {
+        return $this->hasMany(VerzuimControl::class);
+    }
 }
