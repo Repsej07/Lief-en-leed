@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Models;
 
 class User extends Authenticatable
 {
@@ -23,7 +24,7 @@ class User extends Authenticatable
         'password',
         'date_of_birth',
     ];
-
+  
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -44,6 +45,12 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean',
+            'is_sick' => 'boolean',
         ];
+    }
+        public function medicalChecks()
+    {
+        return $this->hasMany(VerzuimControl::class);
     }
 }
