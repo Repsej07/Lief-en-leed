@@ -12,7 +12,8 @@
                     </label>
                     <div class="relative w-[24em]">
                         <input type="text" name="name" id="name" class="p-2 rounded-md w-full"
-                            autocomplete="off" required>
+                            autocomplete="off" required placeholder="Zoek werknemer...">
+                        <input type="hidden" name="selected_name" id="selected_name" required>
                         <div id="nameList" class="bg-white border rounded shadow-md absolute z-10 mt-1 w-full hidden">
                         </div>
                     </div>

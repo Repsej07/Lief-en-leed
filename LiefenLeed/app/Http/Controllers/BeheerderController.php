@@ -24,7 +24,7 @@ class BeheerderController extends Controller
     public function create()
     {
         $users = User::all();
-        
+
         return view('beheerder.create', compact('users'));
     }
 
@@ -34,12 +34,11 @@ class BeheerderController extends Controller
 public function store(Request $request)
 {
     $request->validate([
-        'medewerker' => 'required|exists:users,id',
+        'user_id' => 'required|exists:users,id',
         'startdatum' => 'required|date',
         'opmerkingen' => 'nullable|string',
     ]);
-
-    $user = User::findOrFail($request->medewerker);
+    $user = User::findOrFail($request->user_id);
     $user->is_sick = true;
     $user->sick_start_date = $request->startdatum;
     $user->save();
@@ -86,7 +85,7 @@ public function store(Request $request)
         $user->delete();
         return redirect()->route('beheerder.index');
     }
-    
+
 public function markNotSick(Request $request)
 {
     $request->validate([
