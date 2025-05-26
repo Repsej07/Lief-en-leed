@@ -23,6 +23,46 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $now = new \DateTime();
+        $dateOfBirth = fake()->dateTimeBetween('-100 year', '-18 years');
+        $employmentStart = (clone $dateOfBirth)->modify('+18 years');
+
+        // Avoid future employment start
+        if ($employmentStart > $now) {
+            $employmentStart = (clone $now)->modify('-1 day');
+        }
+
+        $dateOfEmployment = fake()->dateTimeBetween($employmentStart, $now);
+        $dateOfRetirement = (clone $dateOfBirth)->modify('+65 years');
+
+        $retirementCap = fake()->boolean(10)
+            ? $dateOfRetirement
+            : (clone $dateOfEmployment)->modify('+1 year');
+
+        $endOfEmployment = null;
+        if (fake()->boolean(10) && $dateOfEmployment < $retirementCap) {
+            $endOfEmployment = fake()->dateTimeBetween($dateOfEmployment, $retirementCap)->format('Y-m-d');
+        } elseif ($endOfEmployment === null && $now >= $dateOfRetirement) {
+            $endOfEmployment = $dateOfRetirement->format('Y-m-d');
+        }
+
+        $marriageStart = (clone $dateOfBirth)->modify('+18 years');
+        $marriageEnd = $marriageStart > $now ? $marriageStart : $now;
+        $dateOfMarriage = $marriageStart < $marriageEnd
+            ? fake()->dateTimeBetween($marriageStart, $marriageEnd)->format('Y-m-d')
+            : $marriageStart->format('Y-m-d');
+
+        $dateOfDeath = fake()->boolean(10)
+            ? fake()->dateTimeBetween($retirementCap, (clone $retirementCap)->modify('+20 years'))->format('Y-m-d')
+            : null;
+
+            if ($dateOfDeath && !$endOfEmployment) {
+                $deathDate = new \DateTime($dateOfDeath);
+                if ($deathDate > $dateOfRetirement) {
+                    $endOfEmployment = $deathDate->format('Y-m-d');
+                }
+            }
+
 
         return [
             'name' => fake()->name(),
@@ -36,8 +76,6 @@ class UserFactory extends Factory
             'date_of_marriage' => $dateOfMarriage,
             'date_of_death' => $dateOfDeath,
             'remember_token' => Str::random(10),
-            'afdeling' => $this->faker->randomElement($afdelingen),
-            'is_sick' => $this->faker->boolean(20),
         ];
     }
 

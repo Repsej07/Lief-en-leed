@@ -10,6 +10,12 @@ use App\Http\Controllers\EmployeeController;
 // Public routes
 Route::view('/', 'welcome');
 
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/search-employees', [EmployeeController::class, 'search']);
+
+Route::post('/aanvraag', [DashboardController::class, 'storeRequest'])->name('storeRequest');
+
     // Alles onder de dashboard route is alleen toegankelijk voor admins
 Route::middleware(['auth', 'verified', 'is_admin'])->group(function () {
     // Profile routes
