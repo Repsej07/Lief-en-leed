@@ -14,6 +14,8 @@ class requests extends Model
        'Medewerker',
         'name',
         'approved',
+        'created_by',
+        'comments',
     ];
 
     public function user()

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Models\gebeurtenissen;
 use App\Models\requests;
 
@@ -17,7 +18,8 @@ class DashboardController extends Controller
         return view('dashboard', ['gebeurtenissen' => $gebeurtenissen]);
     }
     public static function storeRequest(Request $request)
-{
+{   
+    $requester = Auth::user()->Roepnaam . ' ' . Auth::user()->Achternaam; // Get the full name (Roepnaam and Achternaam) of the currently authenticated user
     $medewerkerNummer = $request->input('medewerker'); // employee number from request
 
     // Get user id and roepnaam by medewerker number in one query
@@ -94,6 +96,8 @@ class DashboardController extends Controller
         'Medewerker' => $medewerkerNummer,
         'name' => $fullName,
         'approved' => $approved,
+        'created_by'=>$requester,
+        'comments' => $request->input('opmerkingen', ''), // Optional comments from the request
     ]);
 
     return view('eindeAanvraag');
