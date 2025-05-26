@@ -1,9 +1,3 @@
-@php
-    $medicalChecks = $medicalChecks ?? collect([]);
-@endphp
-<script>
-    const geplandeMedewerkers = @json($medicalChecks->pluck('user_id'));
-</script>
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ __('HR Dashboard - Ziekteverzuim') }}</h2>
@@ -11,7 +5,7 @@
 
     <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            
+
             @if (session('success'))
                 <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
                     <span class="block sm:inline">{{ session('success') }}</span>
@@ -155,7 +149,7 @@
             <form id="check-form" class="space-y-4">
                 @csrf
                 <input type="hidden" id="modal-user-id" name="user_id">
-                
+
                 <div>
                     <label for="type" class="block text-sm font-medium text-gray-700">Type controle</label>
                     <select id="type" name="type" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
@@ -164,8 +158,8 @@
                         <option value="spreekuur">Spreekuur</option>
                     </select>
                 </div>
-                
- 
+
+
                 <div class="flex justify-end space-x-3 pt-4">
                     <button type="button" id="modal-cancel" class="px-4 py-2 bg-gray-200 text-gray-800 rounded">Annuleren</button>
                     <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded">Inplannen</button>
@@ -181,20 +175,20 @@
             event.dataTransfer.setData('userId', userId);
             event.dataTransfer.setData('userName', userName);
         }
-        
+
         document.getElementById('dropzone').addEventListener('dragover', function(event) {
             event.preventDefault();
             this.classList.add('bg-blue-50', 'border-blue-300');
         });
-        
+
         document.getElementById('dropzone').addEventListener('dragleave', function(event) {
             this.classList.remove('bg-blue-50', 'border-blue-300');
         });
-        
+
 document.getElementById('dropzone').addEventListener('drop', function(event) {
     event.preventDefault();
     this.classList.remove('bg-blue-50', 'border-blue-300');
-    
+
     const userId = event.dataTransfer.getData('userId');
     const userName = event.dataTransfer.getData('userName');
 
@@ -203,7 +197,7 @@ document.getElementById('dropzone').addEventListener('drop', function(event) {
         alert(`${userName} heeft al een geplande controle.`);
         return; // Stop hier, niet de modal openen
     }
-    
+
     // Anders modal openen zoals gewoonlijk
     document.getElementById('modal-user-id').value = userId;
     document.getElementById('modal-user-name').textContent = userName;
@@ -211,17 +205,17 @@ document.getElementById('dropzone').addEventListener('drop', function(event) {
     document.getElementById('check-modal').classList.add('flex');
 });
 
-        
+
         document.getElementById('modal-cancel').addEventListener('click', function() {
             document.getElementById('check-modal').classList.add('hidden');
             document.getElementById('check-modal').classList.remove('flex');
         });
-        
+
         document.getElementById('check-form').addEventListener('submit', function(event) {
             event.preventDefault();
-            
+
             const formData = new FormData(this);
-            
+
             fetch('{{ route("medical-checks.store") }}', {
                 method: 'POST',
                 body: formData,
@@ -236,7 +230,7 @@ document.getElementById('dropzone').addEventListener('drop', function(event) {
                 if (data.success) {
                     document.getElementById('check-modal').classList.add('hidden');
                     document.getElementById('check-modal').classList.remove('flex');
-                    
+
                     // Reload the page to reflect new changes
                     window.location.reload();
                 }

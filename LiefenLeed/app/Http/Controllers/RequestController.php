@@ -9,7 +9,7 @@ class RequestController extends Controller
 {
     public function index()
     {
-        $requests = requests::where('approved', false)->get();
+        $requests = requests::all();
         return view('request.index', compact('requests'));
     }
 

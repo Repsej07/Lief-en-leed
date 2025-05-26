@@ -7,6 +7,7 @@ use App\Http\Controllers\BeheerderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\RequestController;
+use App\Http\Controllers\requests;
 
 // Public routes
 Route::view('/', 'welcome');

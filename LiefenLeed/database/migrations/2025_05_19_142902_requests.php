@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('Medewerker');
             $table->boolean('approved')->default(false);
+            $table->string('created_by');
+            $table->text('comments')->nullable();
+
             $table->timestamps();
         });
     }

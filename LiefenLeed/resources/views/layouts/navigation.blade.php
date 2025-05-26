@@ -13,16 +13,17 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('Aanvragen') }}
                     </x-nav-link>
                     @auth
                         @if (auth()->user()->is_admin)
                             <x-nav-link :href="route('request.index')" :active="request()->routeIs('request.index')" wire:navigate>
-                                    {{ __('Aanvragen') }}
+                                    {{ __('Aanvraag goedkeuring') }}
                             </x-nav-link>
                         @endif
                     @endauth
                 </div>
+
             </div>
 
             <!-- Settings Dropdown -->
