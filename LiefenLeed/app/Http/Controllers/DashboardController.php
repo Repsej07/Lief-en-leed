@@ -117,11 +117,10 @@ class DashboardController extends Controller
                 $threeMonthsLater = (clone $sickdate)->modify('+3 months');
                 $twoDaysBefore = (clone $threeMonthsLater)->modify('-2 days');
                 $twoDaysAfter = (clone $threeMonthsLater)->modify('+2 days');
-                
+
                 if ($currentDate >= $twoDaysBefore && $currentDate <= $twoDaysAfter) {
                     $approved = true;
-                }
-            }
+                }            }
         }
         if ($type === 'Ziekte 3 weken') {
             $sickdate = DB::table('sick_users')->where('user_id', $userId)->value('date_of_sick_leave');
