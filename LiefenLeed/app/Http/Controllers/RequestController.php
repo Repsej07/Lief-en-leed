@@ -28,5 +28,14 @@ class RequestController extends Controller
 
         return redirect()->route('request.index')->with('error', 'Aanvraag verwijderd.');
     }
+    public function toggle($id)
+    {
+        $requestId = $id; // Assuming $id is the request ID passed to the method
+        $requestToToggle = requests::findOrFail($requestId);
+        $requestToToggle->approved = !$requestToToggle->approved; // Toggle status
+        $requestToToggle->save();
+
+        return redirect()->route('request.index')->with('success', 'Status gewijzigd.');
+    }
 
 }

@@ -18,7 +18,7 @@ class DashboardController extends Controller
         return view('dashboard', ['gebeurtenissen' => $gebeurtenissen]);
     }
     public static function storeRequest(Request $request)
-{
+{   
     $requester = Auth::user()->Roepnaam . ' ' . Auth::user()->Achternaam; // Get the full name (Roepnaam and Achternaam) of the currently authenticated user
     $medewerkerNummer = $request->input('medewerker'); // employee number from request
 
@@ -97,6 +97,7 @@ class DashboardController extends Controller
         'name' => $fullName,
         'approved' => $approved,
         'created_by'=>$requester,
+        'comments' => $request->input('opmerkingen', ''), // Optional comments from the request
     ]);
 
     return view('eindeAanvraag');

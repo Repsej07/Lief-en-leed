@@ -26,39 +26,45 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse ($requests->where('approved', false) as $request)
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-700 mr-3 shadow-sm">
-                                        {{ strtoupper(substr($request->name, 0, 2)) }}
+                        @php $uid = 'aanvraag-' . $request->id; @endphp
+                        <tr class="hover:bg-blue-50 transition">
+                            <td colspan="4" class="p-0 border-0">
+                                <input type="checkbox" id="{{ $uid }}" class="peer hidden" />
+                                <label for="{{ $uid }}" class="flex cursor-pointer items-center w-full px-6 py-4 hover:bg-blue-100 transition">
+                                    <div class="flex items-center flex-1">
+                                        <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-700 mr-3 shadow-sm">
+                                            {{ strtoupper(substr($request->name, 0, 2)) }}
+                                        </div>
+                                        <span class="text-sm font-medium text-gray-900">{{ $request->name }}</span>
                                     </div>
-                                    <span class="text-sm font-medium text-gray-900">
-                                        {{ $request->name }}
+                                    <div class="flex-1 text-sm text-gray-700">{{ $request->type }}</div>
+                                    <div class="flex-1 text-sm text-gray-700">
+                                        {{ \Carbon\Carbon::parse($request->datum)->format('d M Y H:i') }}
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex flex-col gap-2 w-48">
+                                            <form action="{{ route('request.goedkeuren', $request->id) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="w-full bg-green-100 text-green-800 py-2 rounded-lg text-center hover:bg-green-200 transition font-semibold shadow">
+                                                    <svg class="inline w-5 h-5 mr-1 -mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                                    Goedkeuren
+                                                </button>
+                                            </form>
+                                            <form action="{{ route('request.afkeuren', $request->id) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="w-full bg-red-100 text-red-800 py-2 rounded-lg text-center hover:bg-red-200 transition font-semibold shadow">
+                                                    <svg class="inline w-5 h-5 mr-1 -mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                                                    Afkeuren
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </label>
+                                <div class="peer-checked:block hidden bg-blue-50 border-t border-blue-100 px-6 py-4 text-gray-700">
+                                    <span class="font-semibold">Opmerkingen:</span>
+                                    <span>
+                                        {{ $request->opmerkingen ? $request->opmerkingen : 'Geen opmerkingen toegevoegd.' }}
                                     </span>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                {{ $request->type }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                {{ \Carbon\Carbon::parse($request->datum)->format('d M Y H:i') }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <div class="flex flex-col gap-2 w-48">
-                                    <form action="{{ route('request.goedkeuren', $request->id) }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="w-full bg-green-100 text-green-800 py-2 rounded-lg text-center hover:bg-green-200 transition font-semibold shadow">
-                                            <svg class="inline w-5 h-5 mr-1 -mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                                            Goedkeuren
-                                        </button>
-                                    </form>
-                                    <form action="{{ route('request.afkeuren', $request->id) }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="w-full bg-red-100 text-red-800 py-2 rounded-lg text-center hover:bg-red-200 transition font-semibold shadow">
-                                            <svg class="inline w-5 h-5 mr-1 -mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-                                            Afkeuren
-                                        </button>
-                                    </form>
                                 </div>
                             </td>
                         </tr>
@@ -70,6 +76,7 @@
                         </tr>
                     @endforelse
                 </tbody>
+
             </table>
         </div>
 
@@ -93,28 +100,40 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse ($requests->where('approved', true) as $request)
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-700 mr-3 shadow-sm">
-                                        {{ strtoupper(substr($request->name, 0, 2)) }}
+                        @php $uid = 'approved-aanvraag-' . $request->id; @endphp
+                        <tr>
+                            <td colspan="4" class="p-0 border-0">
+                                <input type="checkbox" id="{{ $uid }}" class="peer hidden" />
+                                <label for="{{ $uid }}" class="flex cursor-pointer items-center w-full px-6 py-4 hover:bg-green-50 transition">
+                                    <div class="flex items-center flex-1">
+                                        <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-700 mr-3 shadow-sm">
+                                            {{ strtoupper(substr($request->name, 0, 2)) }}
+                                        </div>
+                                        <span class="text-sm font-medium text-gray-900">{{ $request->name }}</span>
                                     </div>
-                                    <span class="text-sm font-medium text-gray-900">
-                                        {{ $request->name }}
-                                    </span>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                {{ $request->type }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                {{ \Carbon\Carbon::parse($request->datum)->format('d M Y H:i') }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <div class="w-48">
-                                    <span class="w-full inline-block bg-green-100 text-green-800 py-2 rounded-lg text-center font-semibold shadow">
-                                        <svg class="inline w-5 h-5 mr-1 -mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                                        Goedgekeurd
+                                    <div class="flex-1 text-sm text-gray-700">{{ $request->type }}</div>
+                                    <div class="flex-1 text-sm text-gray-700">
+                                        {{ \Carbon\Carbon::parse($request->datum)->format('d M Y H:i') }}
+                                    </div>
+                                    <div class="flex-1">
+                                        <form action="{{ route('request.toggleStatus', $request->id) }}" method="POST" class="inline">
+                                            @csrf
+                                            <button type="submit"
+                                                class="w-full inline-block bg-green-100 text-green-800 py-2 rounded-lg text-center font-semibold shadow hover:bg-green-200 transition"
+                                                title="Klik om goedkeuring in te trekken">
+                                                <svg class="inline w-5 h-5 mr-1 -mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                                Goedgekeurd
+                                            </button>
+                                        </form>
+
+                                    </div>
+                                </label>
+                                <div class="peer-checked:block hidden bg-green-50 border-t border-green-100 px-6 py-4 text-gray-700">
+                                    <span class="font-semibold">Opmerkingen:</span>
+                                    <span>
+                                        {{ $request->comments ? $request->comments : 'Geen opmerkingen toegevoegd.' }}
                                     </span>
                                 </div>
                             </td>
@@ -127,6 +146,7 @@
                         </tr>
                     @endforelse
                 </tbody>
+
             </table>
         </div>
     </div>

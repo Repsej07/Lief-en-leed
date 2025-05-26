@@ -32,6 +32,7 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::get('request/index', [RequestController::class, 'index'])->name('request.index');
     Route::post('request/{id}/goedkeuren', [RequestController::class, 'goedkeuren'])->name('request.goedkeuren');
     Route::post('request/{id}/afkeuren', [RequestController::class, 'afkeuren'])->name('request.afkeuren');
+    Route::post('request/{id}/toggle', [RequestController::class, 'toggle'])->name('request.toggleStatus');
 });
 });
 require __DIR__.'/auth.php';
