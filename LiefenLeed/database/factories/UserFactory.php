@@ -39,42 +39,19 @@ class UserFactory extends Factory
             ? $dateOfRetirement
             : (clone $dateOfEmployment)->modify('+1 year');
 
-        $endOfEmployment = null;
-        if (fake()->boolean(10) && $dateOfEmployment < $retirementCap) {
-            $endOfEmployment = fake()->dateTimeBetween($dateOfEmployment, $retirementCap)->format('Y-m-d');
-        } elseif ($endOfEmployment === null && $now >= $dateOfRetirement) {
-            $endOfEmployment = $dateOfRetirement->format('Y-m-d');
-        }
-
-        $marriageStart = (clone $dateOfBirth)->modify('+18 years');
-        $marriageEnd = $marriageStart > $now ? $marriageStart : $now;
-        $dateOfMarriage = $marriageStart < $marriageEnd
-            ? fake()->dateTimeBetween($marriageStart, $marriageEnd)->format('Y-m-d')
-            : $marriageStart->format('Y-m-d');
-
-        $dateOfDeath = fake()->boolean(10)
-            ? fake()->dateTimeBetween($retirementCap, (clone $retirementCap)->modify('+20 years'))->format('Y-m-d')
-            : null;
-
-            if ($dateOfDeath && !$endOfEmployment) {
-                $deathDate = new \DateTime($dateOfDeath);
-                if ($deathDate > $dateOfRetirement) {
-                    $endOfEmployment = $deathDate->format('Y-m-d');
-                }
-            }
 
 
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'Medewerker' => fake()->numberBetween(0, 999999),
+            'Roepnaam' => fake()->firstName(),
+            'Voorvoegsel' => fake()->optional()->word(),
+            'Achternaam' => fake()->lastName(),
+            'E-mail_werk' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
-            'date_of_birth' => $dateOfBirth->format('Y-m-d'),
-            'date_of_employment' => $dateOfEmployment->format('Y-m-d'),
-            'end_of_employment' => $endOfEmployment,
-            'date_of_retirement' => $dateOfRetirement->format('Y-m-d'),
-            'date_of_marriage' => $dateOfMarriage,
-            'date_of_death' => $dateOfDeath,
+            'Geboortedatum' => $dateOfBirth->format('Y-m-d'),
+            'In_dienst_ivm_dienstjaren' => $dateOfEmployment->format('Y-m-d'),
+            'AOW-datum' => $dateOfRetirement->format('Y-m-d'),
             'remember_token' => Str::random(10),
         ];
     }

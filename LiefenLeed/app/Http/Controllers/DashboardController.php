@@ -18,7 +18,6 @@ class DashboardController extends Controller
     }
     public static function storeRequest(Request $request)
     {
-        dd($request->all());
         $userId = DB::table('users')->where('name', $request->input('name'))->value('id');
         $type = $request->input('type');
         $approved = false; // Set default
