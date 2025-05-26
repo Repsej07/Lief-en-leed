@@ -39,6 +39,7 @@ public function store(Request $request)
         'opmerkingen' => 'nullable|string',
     ]);
     $user = User::findOrFail($request->user_id);
+    
     $user->is_sick = true;
     $user->sick_start_date = $request->startdatum;
     $user->save();

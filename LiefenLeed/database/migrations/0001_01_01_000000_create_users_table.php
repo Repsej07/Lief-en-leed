@@ -19,10 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->date('date_of_birth');
             $table->date('date_of_employment');
-            $table->date('end_of_employment')->nullable();
             $table->date('date_of_retirement')->nullable();
-            $table->date('date_of_marriage')->nullable();
-            $table->date('date_of_death')->nullable();
 
 
 
