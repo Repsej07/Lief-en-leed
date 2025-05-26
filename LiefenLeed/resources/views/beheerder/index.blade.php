@@ -1,14 +1,11 @@
 @php
     $medicalChecks = $medicalChecks ?? collect([]);
 @endphp
-<script>
-    const geplandeMedewerkers = @json($medicalChecks->pluck('user_id'));
-</script>
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ __('HR Dashboard - Ziekteverzuim') }}</h2>
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ __('HR Dashboard - Ziektecontrole') }}</h2>
     </x-slot>
-
+    
     <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             
@@ -18,7 +15,7 @@
                 </div>
             @endif
 
-            {{-- Huidige ziekmeldingen --}}
+            <!-- Ziekmeldingen -->
             <div class="bg-white rounded-lg shadow">
                 <div class="p-4 border-b border-gray-200 flex justify-between items-center">
                     <h3 class="text-lg font-medium">Huidige ziekmeldingen</h3>
@@ -175,6 +172,7 @@
     </div>
 
     <script>
+        const geplandeMedewerkers = @json($medicalChecks->pluck('user_id'));
         function drag(event) {
             const userId = event.target.getAttribute('data-id');
             const userName = event.target.getAttribute('data-name');
