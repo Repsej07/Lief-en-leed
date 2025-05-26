@@ -19,12 +19,12 @@
                     {{-- Medewerker --}}
                     <div>
                         <label for="medewerker" class="block text-sm font-medium text-gray-700">Medewerker</label>
-                        <select id="medewerker" name="medewerker" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                            <option value="">-- Selecteer medewerker --</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->afdeling ?? 'Geen afdeling' }})</option>
-                            @endforeach
-                        </select>
+                        <div class="relative w-[24em]">
+                            <input type="text" name="name" id="name" class="p-2 rounded-md w-full"
+                                autocomplete="off" required>
+                            <div id="nameList" class="bg-white border rounded shadow-md absolute z-10 mt-1 w-full hidden">
+                            </div>
+                        </div>
                         @error('medewerker')
                             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                         @enderror
@@ -62,4 +62,50 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const nameInput = document.getElementById('name');
+            const nameList = document.getElementById('nameList');
+
+            nameInput.addEventListener('input', function() {
+                const query = this.value;
+
+                if (query.length > 0) {
+                    fetch(`/search-employees?query=${query}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            let output = '';
+                            if (data.length > 0) {
+                                data.forEach(employee => {
+                                    output +=
+                                        `<div class="p-2 hover:bg-blue-100 cursor-pointer" data-name="${employee.name}">${employee.name}</div>`;
+                                });
+                                nameList.innerHTML = output;
+                                nameList.classList.remove('hidden');
+                            } else {
+                                nameList.classList.add('hidden');
+                            }
+
+                            // click event on options
+                            document.querySelectorAll('#nameList div').forEach(item => {
+                                item.addEventListener('click', function() {
+                                    nameInput.value = this.dataset.name;
+                                    nameList.classList.add('hidden');
+                                });
+                            });
+                        });
+                } else {
+                    nameList.classList.add('hidden');
+                }
+            });
+
+            // Close dropdown on outside click
+            document.addEventListener('click', function(e) {
+                if (!nameInput.contains(e.target) && !nameList.contains(e.target)) {
+                    nameList.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+
 </x-app-layout>
