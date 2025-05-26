@@ -1,14 +1,14 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VerzuimControlController;
 use App\Http\Controllers\BeheerderController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EmployeeController;
 
 // Public routes
 Route::view('/', 'welcome');
-
-    Route::view('/dashboard', 'dashboard')->name('dashboard');
 
     // Alles onder de dashboard route is alleen toegankelijk voor admins
 Route::middleware(['auth', 'verified', 'is_admin'])->group(function () {
