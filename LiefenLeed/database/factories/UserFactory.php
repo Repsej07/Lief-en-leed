@@ -46,7 +46,7 @@ class UserFactory extends Factory
             'Roepnaam' => fake()->firstName(),
             'Voorvoegsel' => fake()->optional()->word(),
             'Achternaam' => fake()->lastName(),
-            'E-mail_werk' => fake()->unique()->safeEmail(),
+            'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'Geboortedatum' => $dateOfBirth->format('Y-m-d'),

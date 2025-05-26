@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('Roepnaam');
             $table->string('Voorvoegsel')->nullable();
             $table->string('Achternaam');
-            $table->string('E-mail_werk')->unique();
+            $table->string('email')->unique();
             $table->date('Geboortedatum');
             $table->date('AOW-datum')->nullable();
             $table->date('In_dienst_ivm_dienstjaren');

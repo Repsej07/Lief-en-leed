@@ -3,7 +3,7 @@
         <h1 class="text-2xl font-bold">Lief en leed Aanvraag</h1>
     </div>
     <div id="forms">
-        <form action="{{route(name: 'storeRequest')}}" method="POST">
+        <form action="{{ route('storeRequest') }}" method="POST">
             @csrf
             <div class="flex flex-row items-center justify-center space-x-8">
                 <div class="flex flex-col items-center">
@@ -14,6 +14,7 @@
                         <input type="text" name="name" id="name" class="p-2 rounded-md w-full"
                             autocomplete="off" required placeholder="Zoek werknemer...">
                         <input type="hidden" name="selected_name" id="selected_name" required>
+                        <input type="hidden" name="medewerker" id="medewerker">
                         <div id="nameList" class="bg-white border rounded shadow-md absolute z-10 mt-1 w-full hidden">
                         </div>
                     </div>
@@ -48,22 +49,24 @@
 
 </div>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         const nameInput = document.getElementById('name');
         const nameList = document.getElementById('nameList');
+        const selectedNameInput = document.getElementById('selected_name');
+        const medewerkerInput = document.getElementById('medewerker');
 
-        nameInput.addEventListener('input', function() {
+        nameInput.addEventListener('input', function () {
             const query = this.value;
 
             if (query.length > 0) {
-                fetch(`/search-employees?query=${query}`)
+                fetch(`/search-employees?query=${encodeURIComponent(query)}`)
                     .then(res => res.json())
                     .then(data => {
                         let output = '';
                         if (data.length > 0) {
                             data.forEach(employee => {
-                                output +=
-                                    `<div class="p-2 hover:bg-blue-100 cursor-pointer" data-name="${employee.name}">${employee.name}</div>`;
+                                const fullName = `${employee.voornaam} ${employee.tussenvoegsel ? employee.tussenvoegsel + ' ' : ''}${employee.achternaam}`;
+                                output += `<div class="p-2 hover:bg-blue-100 cursor-pointer" data-id="${employee.id}" data-name="${fullName}">${fullName}</div>`;
                             });
                             nameList.innerHTML = output;
                             nameList.classList.remove('hidden');
@@ -71,10 +74,12 @@
                             nameList.classList.add('hidden');
                         }
 
-                        // click event on options
+                        // Attach click event to new items
                         document.querySelectorAll('#nameList div').forEach(item => {
-                            item.addEventListener('click', function() {
+                            item.addEventListener('click', function () {
                                 nameInput.value = this.dataset.name;
+                                selectedNameInput.value = this.dataset.name;
+                                medewerkerInput.value = this.getAttribute('data-id');
                                 nameList.classList.add('hidden');
                             });
                         });
@@ -85,10 +90,11 @@
         });
 
         // Close dropdown on outside click
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             if (!nameInput.contains(e.target) && !nameList.contains(e.target)) {
                 nameList.classList.add('hidden');
             }
         });
     });
 </script>
+

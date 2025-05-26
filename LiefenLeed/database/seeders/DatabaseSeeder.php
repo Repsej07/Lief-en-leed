@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             'Roepnaam' => 'Test',
             'Voorvoegsel' => 'de',
             'Achternaam' => 'Tester',
-            'E-mail_werk' => 'test@example.com',
+            'email' => 'test@example.com',
             'password'=>'liedenleed',
             'Geboortedatum' => '2000-01-01',
             'is_admin' => true,
