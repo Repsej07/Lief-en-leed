@@ -6,6 +6,7 @@ use App\Http\Controllers\VerzuimControlController;
 use App\Http\Controllers\BeheerderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\RequestController;
 
 // Public routes
 Route::view('/', 'welcome');
@@ -25,18 +26,11 @@ Route::middleware(['auth', 'verified', 'is_admin'])->group(function () {
         Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
     });
 
-    // Beheerder routes
-    Route::resource('beheerder', BeheerderController::class)->only(['index', 'create', 'store']);
-    Route::post('/beheerder/mark-not-sick', [BeheerderController::class, 'markNotSick'])->name('beheerder.markNotSick');
-
-    // VerzuimControle routes
-    Route::prefix('medical-checks')->name('medical-checks.')->group(function () {
-        Route::post('/', [VerzuimControlController::class, 'store'])->name('store');
-        Route::post('{medicalCheck}/approve', [VerzuimControlController::class, 'approve'])->name('approve');
-        Route::post('{medicalCheck}/disapprove', [VerzuimControlController::class, 'disapprove'])->name('disapprove');
-        Route::get('data', [VerzuimControlController::class, 'getMedicalChecks'])->name('data');
-    });
-
-    Route::get('/beheerder/index', [VerzuimControlController::class, 'index'])->name('beheerder.index');
+    // Request routes alleen voor admins bereikbaar
+Route::middleware(['auth', 'is_admin'])->group(function () {
+    Route::get('request/index', [RequestController::class, 'index'])->name('request.index');
+    Route::post('request/{id}/goedkeuren', [RequestController::class, 'goedkeuren'])->name('request.goedkeuren');
+    Route::post('request/{id}/afkeuren', [RequestController::class, 'afkeuren'])->name('request.afkeuren');
+});
 });
 require __DIR__.'/auth.php';
