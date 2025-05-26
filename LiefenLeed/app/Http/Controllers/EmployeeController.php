@@ -8,19 +8,27 @@ use Illuminate\Support\Facades\DB;
 
 class EmployeeController extends Controller
 {
-    public function search(Request $request)
-    {
-        $query = $request->input('query');
 
-        $results = DB::table('users')
-            ->where('Roepnaam', 'like', "%{$query}%")
-            ->orWhere('Voorvoegsel', 'like', "%{$query}%")
-            ->orWhere('Achternaam', 'like', "%{$query}%")
-            ->select('Roepnaam as voornaam', 'Voorvoegsel as tussenvoegsel', 'Achternaam as achternaam', 'Medewerker')
-            ->limit(10)
-            ->get();
+public function search(Request $request)
+{
+    $query = $request->input('query');
 
-        return response()->json($results);
+    if (!$query) {
+        return response()->json([]);
     }
+
+    $employees = DB::table('users')
+        ->select('Medewerker as medewerker', 'Roepnaam as voornaam', 'Voorvoegsel as tussenvoegsel', 'Achternaam as achternaam')
+        ->where(function($q) use ($query) {
+            $q->where('Roepnaam', 'like', "%{$query}%")
+              ->orWhere('Achternaam', 'like', "%{$query}%")
+              ->orWhere(DB::raw("CONCAT(Roepnaam, ' ', Voorvoegsel, ' ', Achternaam)"), 'like', "%{$query}%");
+        })
+        ->limit(10)
+        ->get();
+
+    return response()->json($employees);
+}
+
 
 }

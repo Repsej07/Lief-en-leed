@@ -14,11 +14,11 @@
                         <input type="text" name="name" id="name" class="p-2 rounded-md w-full"
                             autocomplete="off" required placeholder="Zoek werknemer...">
                         <input type="hidden" name="selected_name" id="selected_name" required>
+                        <!-- Hidden input for medewerker ID -->
                         <input type="hidden" name="medewerker" id="medewerker">
                         <div id="nameList" class="bg-white border rounded shadow-md absolute z-10 mt-1 w-full hidden">
                         </div>
                     </div>
-
                 </div>
                 <div class="flex flex-col items-center">
                     <label for="type" class="mb-2 font-bold">Selecteer een gebeurtenis*</label>
@@ -28,7 +28,6 @@
                         @endforeach
                     </select>
                 </div>
-
             </div>
             <div class="flex flex-col items-center space-y-2 w-full mt-5">
                 <label for="opmerkingen" class="mb-2 font-bold">Eventuele opmerkingen?</label>
@@ -41,60 +40,62 @@
                     Aanvragen
                 </button>
             </div>
-
-
         </form>
-
     </div>
-
 </div>
+
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const nameInput = document.getElementById('name');
-        const nameList = document.getElementById('nameList');
-        const selectedNameInput = document.getElementById('selected_name');
-        const medewerkerInput = document.getElementById('medewerker');
+document.addEventListener("DOMContentLoaded", function() {
+    const nameInput = document.getElementById('name');
+    const nameList = document.getElementById('nameList');
+    const selectedNameInput = document.getElementById('selected_name');
+    const medewerkerInput = document.getElementById('medewerker');
 
-        nameInput.addEventListener('input', function () {
-            const query = this.value;
+    nameInput.addEventListener('input', function() {
+        const query = this.value.trim();
 
-            if (query.length > 0) {
-                fetch(`/search-employees?query=${encodeURIComponent(query)}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        let output = '';
-                        if (data.length > 0) {
-                            data.forEach(employee => {
-                                const fullName = `${employee.voornaam} ${employee.tussenvoegsel ? employee.tussenvoegsel + ' ' : ''}${employee.achternaam}`;
-                                output += `<div class="p-2 hover:bg-blue-100 cursor-pointer" data-id="${employee.id}" data-name="${fullName}">${fullName}</div>`;
-                            });
-                            nameList.innerHTML = output;
-                            nameList.classList.remove('hidden');
-                        } else {
+        if (query.length > 0) {
+            fetch(`/search-employees?query=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(data => {
+                    let output = '';
+                    if (data.length > 0) {
+                        data.forEach(employee => {
+                            const fullName = `${employee.voornaam} ${employee.tussenvoegsel ? employee.tussenvoegsel + ' ' : ''}${employee.achternaam}`;
+                            output += `<div class="p-2 hover:bg-blue-100 cursor-pointer"
+                                        data-name="${fullName}"
+                                        data-medewerker="${employee.medewerker}">
+                                        ${fullName}
+                                    </div>`;
+                        });
+                        nameList.innerHTML = output;
+                        nameList.classList.remove('hidden');
+                    } else {
+                        nameList.classList.add('hidden');
+                    }
+
+                    // Add click event listeners to all dropdown items
+                    document.querySelectorAll('#nameList div').forEach(item => {
+                        item.addEventListener('click', function() {
+                            nameInput.value = this.dataset.name;
+                            selectedNameInput.value = this.dataset.name;
+                            medewerkerInput.value = this.dataset.medewerker;
                             nameList.classList.add('hidden');
-                        }
-
-                        // Attach click event to new items
-                        document.querySelectorAll('#nameList div').forEach(item => {
-                            item.addEventListener('click', function () {
-                                nameInput.value = this.dataset.name;
-                                selectedNameInput.value = this.dataset.name;
-                                medewerkerInput.value = this.getAttribute('data-id');
-                                nameList.classList.add('hidden');
-                            });
                         });
                     });
-            } else {
-                nameList.classList.add('hidden');
-            }
-        });
-
-        // Close dropdown on outside click
-        document.addEventListener('click', function (e) {
-            if (!nameInput.contains(e.target) && !nameList.contains(e.target)) {
-                nameList.classList.add('hidden');
-            }
-        });
+                });
+        } else {
+            nameList.classList.add('hidden');
+            selectedNameInput.value = '';
+            medewerkerInput.value = '';
+        }
     });
-</script>
 
+    // Close dropdown on outside click
+    document.addEventListener('click', function(e) {
+        if (!nameInput.contains(e.target) && !nameList.contains(e.target)) {
+            nameList.classList.add('hidden');
+        }
+    });
+});
+</script>

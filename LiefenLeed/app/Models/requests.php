@@ -11,6 +11,7 @@ class requests extends Model
     protected $table = 'requests';
     protected $fillable = [
        'type',
+       'Medewerker',
         'name',
         'approved',
     ];

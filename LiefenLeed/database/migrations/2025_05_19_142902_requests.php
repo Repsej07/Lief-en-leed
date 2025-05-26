@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('type');
             $table->string('name');
+            $table->string('Medewerker');
             $table->boolean('approved')->default(false);
             $table->timestamps();
         });

@@ -17,53 +17,65 @@ class DashboardController extends Controller
         return view('dashboard', ['gebeurtenissen' => $gebeurtenissen]);
     }
     public static function storeRequest(Request $request)
-    {
-        dd($request->all());
-        $userId = DB::table('users')->where('name', $request->input('name'))->value('id');
-        $type = $request->input('type');
-        $approved = false; // Set default
+{
+    $medewerkerNummer = $request->input('medewerker'); // employee number from request
 
-        if (in_array($type, ['50e Verjaardag', '65e Verjaardag'])) {
-            $dateOfBirth = DB::table('users')->where('id', $userId)->value('date_of_birth');
-            $milestoneAge = $type == '50e Verjaardag' ? 50 : 65;
-            $milestoneBirthday = date('Y-m-d', strtotime($dateOfBirth . " +$milestoneAge years"));
-            $currentDate = date('Y-m-d');
-            $oneMonthBefore = date('Y-m-d', strtotime($milestoneBirthday . ' -1 month'));
-            $oneMonthAfter = date('Y-m-d', strtotime($milestoneBirthday . ' +1 month'));
+    // Get user id and roepnaam by medewerker number in one query
+    $user = DB::table('users')
+        ->select('id', 'Roepnaam', 'Voorvoegsel', 'Achternaam','Geboortedatum', 'In_dienst_ivm_dienstjaren', 'AOW-datum')
+        ->where('Medewerker', $medewerkerNummer)
+        ->first();
 
-            if ($currentDate >= $oneMonthBefore && $currentDate <= $oneMonthAfter) {
+    if (!$user) {
+        // Handle not found, e.g. redirect back with error
+        return redirect()->back()->withErrors(['medewerker' => 'Medewerker niet gevonden']);
+    }
+
+    $userId = $user->id;
+    $type = $request->input('type');
+    $approved = false;
+    $fullName = trim($user->Roepnaam . ' ' . ($user->Voorvoegsel ? $user->Voorvoegsel . ' ' : '') . $user->Achternaam);
+
+
+
+    if (in_array($type, ['50e Verjaardag', '65e Verjaardag'])) {
+        $dateOfBirth = $user->Geboortedatum;
+        $milestoneAge = $type == '50e Verjaardag' ? 50 : 65;
+        $milestoneBirthday = date('Y-m-d', strtotime($dateOfBirth . " +$milestoneAge years"));
+        $currentDate = date('Y-m-d');
+        $oneMonthBefore = date('Y-m-d', strtotime($milestoneBirthday . ' -1 month'));
+        $oneMonthAfter = date('Y-m-d', strtotime($milestoneBirthday . ' +1 month'));
+
+        if ($currentDate >= $oneMonthBefore && $currentDate <= $oneMonthAfter) {
             $approved = true;
-            }
+        }
+    }
+
+    if (in_array($type, ['12,5 Jaar Ambtenaar', '25 Jaar Ambtenaar', '40 Jaar Ambtenaar'])) {
+        $employmentDate = $user->In_dienst_ivm_dienstjaren;
+        $employmentDateObj = new \DateTime($employmentDate);
+
+        if ($type === '12,5 Jaar Ambtenaar') {
+            $milestoneDate = (clone $employmentDateObj)->add(new \DateInterval('P12Y6M'));
+        } elseif ($type === '25 Jaar Ambtenaar') {
+            $milestoneDate = (clone $employmentDateObj)->add(new \DateInterval('P25Y'));
+        } else {
+            $milestoneDate = (clone $employmentDateObj)->add(new \DateInterval('P40Y'));
         }
 
+        $currentDate = new \DateTime();
+        $oneMonthBefore = (clone $milestoneDate)->modify('-1 month');
+        $oneMonthAfter = (clone $milestoneDate)->modify('+1 month');
 
-        if (in_array($type, ['12,5 Jaar Ambtenaar', '25 Jaar Ambtenaar', '40 Jaar Ambtenaar'])) {
-            $employmentDate = DB::table('users')->where('id', $userId)->value('date_of_employment');
-            $employmentDateObj = new \DateTime($employmentDate);
-
-            // Handle different year milestones
-            if ($type === '12,5 Jaar Ambtenaar') {
-                // Add 12 years and 6 months
-                $milestoneDate = (clone $employmentDateObj)->add(new \DateInterval('P12Y6M'));
-            } elseif ($type === '25 Jaar Ambtenaar') {
-                $milestoneDate = (clone $employmentDateObj)->add(new \DateInterval('P25Y'));
-            } else {
-                $milestoneDate = (clone $employmentDateObj)->add(new \DateInterval('P40Y'));
-            }
-
-            $currentDate = new \DateTime();
-            $oneMonthBefore = (clone $milestoneDate)->modify('-1 month');
-            $oneMonthAfter = (clone $milestoneDate)->modify('+1 month');
-
-            if ($currentDate >= $oneMonthBefore && $currentDate <= $oneMonthAfter) {
-                $approved = true;
-            }
+        if ($currentDate >= $oneMonthBefore && $currentDate <= $oneMonthAfter) {
+            $approved = true;
         }
+    }
 
-        if ($type === 'Pensionering') {
-            $endOfEmployment = DB::table('users')->where('id', $userId)->value('end_of_employment');
+    if ($type === 'Pensionering') {
+        $endOfEmployment = $user->{'AOW-datum'};
 
-            if ($endOfEmployment) {
+        if ($endOfEmployment) {
             $endOfEmployment = new \DateTime($endOfEmployment);
             $currentDate = new \DateTime();
             $oneMonthBefore = (clone $endOfEmployment)->modify('-1 month');
@@ -72,16 +84,19 @@ class DashboardController extends Controller
             if ($currentDate >= $oneMonthBefore && $currentDate <= $oneMonthAfter) {
                 $approved = true;
             }
-            }
         }
-
-
-        requests::create([
-            'type' => $type,
-            '' => $request->input('name'),
-            'approved' => $approved,
-        ]);
-
-        return view('eindeAanvraag');
     }
+
+
+
+ requests::create([
+        'type' => $type,
+        'Medewerker' => $medewerkerNummer,
+        'name' => $fullName,
+        'approved' => $approved,
+    ]);
+
+    return view('eindeAanvraag');
+}
+
 }
