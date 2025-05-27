@@ -9,8 +9,11 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\requests;
 
+
 // Public routes
-Route::view('/', 'welcome');
+use Illuminate\Support\Facades\Auth;
+
+Route::get('/', fn () => redirect()->route(Auth::check() ? 'dashboard' : 'login'));
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
