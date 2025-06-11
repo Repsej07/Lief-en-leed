@@ -11,15 +11,20 @@
                         </div>
                     @endif
 
-                    @if ($errors->any())
-                        <div class="mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
-                            <ul class="list-disc pl-5 text-left">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
+                    @if (session('skipped') && count(session('skipped')) > 0)
+                        <div class="mt-6 bg-red-100 text-red-800 p-4 rounded-lg">
+                            <h2 class="font-bold text-lg mb-2">Overgeslagen gebruikers:</h2>
+                            <ul class="list-disc list-inside">
+                                @foreach (session('skipped') as $skip)
+                                    <li>
+                                        <strong>{{ $skip['medewerker'] }}</strong> ({{ $skip['email'] }}) —
+                                        {{ $skip['reden'] }}
+                                    </li>
                                 @endforeach
                             </ul>
                         </div>
                     @endif
+
 
                     <form action="{{ route('import.data') }}" method="POST" enctype="multipart/form-data"
                         class="space-y-6">
