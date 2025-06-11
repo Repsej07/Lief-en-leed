@@ -20,6 +20,9 @@
                             <x-nav-link :href="route('request.index')" :active="request()->routeIs('request.index')" wire:navigate>
                                     {{ __('Aanvraag goedkeuring') }}
                             </x-nav-link>
+                            <x-nav-link :href="route('import')" :active="request()->routeIs('import')" wire:navigate>
+                                    {{ __('import') }}
+                            </x-nav-link>
                         @endif
                     @endauth
                 </div>

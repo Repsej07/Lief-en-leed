@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\requests;
+use App\Http\Controllers\ImportController;
 
 // Public routes
 Route::view('/', 'welcome');
@@ -33,6 +34,9 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::post('request/{id}/goedkeuren', [RequestController::class, 'goedkeuren'])->name('request.goedkeuren');
     Route::post('request/{id}/afkeuren', [RequestController::class, 'afkeuren'])->name('request.afkeuren');
     Route::post('request/{id}/toggle', [RequestController::class, 'toggle'])->name('request.toggleStatus');
+    Route::view('/import', 'components.import')->name('import');
+    Route::post('/import-data', [ImportController::class, 'import'])->name('import.data');
+
 });
 });
 require __DIR__.'/auth.php';
