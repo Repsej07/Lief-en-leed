@@ -1,0 +1,14 @@
+{
+  "rows": [
+    {
+      "Medewerker": "100000",
+      "Roepnaam": "Test",
+      "Voorvoegsel": "",
+      "Achternaam": "User",
+      "E-mail_werk": "testuser@example.com",
+      "Geboortedatum": "1990-01-01",
+      "AOW-datum": "2055-01-01",
+      "In_dienst_ivm_dienstjaren": "2010-01-01"
+    }
+  ]
+}

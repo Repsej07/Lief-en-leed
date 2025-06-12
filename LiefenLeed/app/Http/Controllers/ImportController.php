@@ -15,13 +15,20 @@ class ImportController extends Controller
 
     public function import(Request $request)
     {
+        Log::debug('Import called');
         $request->validate([
             'import_file' => 'required|file|mimetypes:application/json,text/plain'
         ]);
+        Log::debug('File validation passed');
 
 
         $json = file_get_contents($request->file('import_file')->getRealPath());
         $data = json_decode($json, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return redirect()->back()->withErrors(['import_file' => 'Ongeldig JSON-formaat.']);
+        }
+
 
         if (!isset($data['rows']) || !is_array($data['rows'])) {
             return back()->withErrors(['import_file' => 'Ongeldig JSON-formaat.']);
@@ -33,7 +40,7 @@ class ImportController extends Controller
         foreach ($data['rows'] as $row) {
             try {
                 User::updateOrCreate(
-                    ['medewerker' => $row['Medewerker'], 'roepnaam' => $row['Roepnaam']], // Search condition
+                    ['medewerker' => $row['Medewerker']], // Search condition
                     [
                         'Roepnaam' => $row['Roepnaam'],
                         'Voorvoegsel' => $row['Voorvoegsel'],
