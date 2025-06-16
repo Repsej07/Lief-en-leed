@@ -2,18 +2,12 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\VerzuimControlController;
-use App\Http\Controllers\BeheerderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\RequestController;
-use App\Http\Controllers\requests;
 use App\Http\Controllers\ImportController;
 
-// Public routes
-Route::view('/', 'welcome');
-
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/search-employees', [EmployeeController::class, 'search']);
 

@@ -34,13 +34,6 @@ class UserFactory extends Factory
 
         $dateOfEmployment = fake()->dateTimeBetween($employmentStart, $now);
         $dateOfRetirement = (clone $dateOfBirth)->modify('+65 years');
-
-        $retirementCap = fake()->boolean(10)
-            ? $dateOfRetirement
-            : (clone $dateOfEmployment)->modify('+1 year');
-
-
-
         return [
             'Medewerker' => fake()->numberBetween(0, 999999),
             'Roepnaam' => fake()->firstName(),

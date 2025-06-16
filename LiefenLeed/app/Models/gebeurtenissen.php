@@ -12,6 +12,4 @@ class gebeurtenissen extends Model
         'type',
 
     ];
-
-    
 }

@@ -76,7 +76,7 @@
                                 <div
                                     class="peer-checked:block hidden bg-blue-50 border-t border-blue-100 px-6 py-4 text-gray-700">
                                     <span class="font-semibold">Aangedvraagd door:</span>
-                                    <span>{{ $request->name }}</span>
+                                    <span>{{ $request->created_by }}</span>
                                     <br>
                                     <span class="font-semibold">Opmerkingen:</span>
                                     <span>
@@ -155,7 +155,7 @@
                                 <div
                                     class="peer-checked:block hidden bg-green-50 border-t border-green-100 px-6 py-4 text-gray-700">
                                     <span class="font-semibold">Aangedvraagd door:</span>
-                                    <span>{{ $request->name }}</span>
+                                    <span>{{ $request->created_by}}</span>
                                     <br>
                                     <span class="font-semibold">Opmerkingen:</span>
                                     <span>

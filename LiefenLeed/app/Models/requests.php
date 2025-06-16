@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use function PHPSTORM_META\type;
 
 class requests extends Model
 {
+    use HasFactory;
     protected $table = 'requests';
     protected $fillable = [
-       'type',
-       'Medewerker',
+        'type',
+        'Medewerker',
         'name',
         'approved',
         'created_by',
