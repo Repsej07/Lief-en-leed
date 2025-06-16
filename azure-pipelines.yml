@@ -1,0 +1,46 @@
+trigger:
+  branches:
+    include:
+      - main  # or 'master' or any other branch you want to trigger on
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  phpVersion: 8.2
+
+steps:
+- task: UsePHPVersion@0
+  inputs:
+    versionSpec: '$(phpVersion)'
+
+- script: |
+    php -v
+    composer install --no-interaction --prefer-dist --optimize-autoloader
+  displayName: 'Install PHP dependencies'
+
+- script: |
+    cp .env.example .env
+    php artisan key:generate
+  displayName: 'Set up Laravel environment'
+
+- script: |
+    php artisan migrate --force
+  displayName: 'Run migrations'
+
+- script: |
+    npm install
+    npm run build
+  displayName: 'Build frontend assets'
+
+# Optional: Run tests
+- script: |
+    php artisan test
+  displayName: 'Run tests'
+
+# Deployment (e.g., to Azure App Service)
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: '<YOUR AZURE SERVICE CONNECTION>'
+    appName: '<YOUR APP SERVICE NAME>'
+    package: '$(System.DefaultWorkingDirectory)'
