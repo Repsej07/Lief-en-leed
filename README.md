@@ -70,7 +70,6 @@ De exacte kosten worden bepaald op basis van een nadere analyse. Verwachte koste
 |----------------------------------------|------------------------------------------------------|
 | Onvoldoende acceptatie door medewerkers| Training & communicatiecampagne                      |
 | Onjuiste automatische controles        | Testfase met steekproeven                            |
-| Technische complicaties met Mollie     | Vroegtijdige afstemming met Mollie en IT-team        |
 
 ## 11. Stakeholders
 
@@ -106,6 +105,64 @@ Feedback wordt verzameld en optimalisaties worden doorgevoerd. Het project wordt
 - Overlijden van ambtenaar of huisgenoot  
 
 ---
+# Lief-en-Leed – Installatie & Uitvoeren
 
+## Systeemvereisten
+- PHP 8.1 of hoger
+- Composer
+- Node.js & NPM
+- MySQL of SQLite database
+## Installatie
+
+1. **Clone de repository**
+git clone https://github.com/Repsej07/Lief-en-leed.git
+cd Lief-en-leed/LiefenLeed
+
+
+2. **Installeer PHP dependencies**
+composer install
+
+
+3. **Installeer JavaScript dependencies**
+npm install
+npm run build
+
+
+4. **Kopieer en configureer de environment file**
+cp .env.example .env
+
+1. **Genereer de applicatiesleutel**
+php artisan key:generate
+
+
+6. **Voer de database migraties en seeders uit**
+php artisan migrate --seed
+
+
+7. **Start de ontwikkelserver**
+php artisan serve
+
+De applicatie is nu bereikbaar op [http://localhost:8000].
+
+---
+## Testen
+
+- **Alle tests draaien**
+php artisan test
+
+
+---
+
+## Deployment (productie)
+
+- Zet de code op een Linux-server
+- Stel de `.env`-variabelen in voor productie
+- Voer migraties uit:
+php artisan migrate --force
+
+- Cache configuratie en routes:
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
 
 
