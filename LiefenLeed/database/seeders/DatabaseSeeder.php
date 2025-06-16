@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             'is_admin' => false,
         ]);
 
-        User::factory(10)->create();
-        requests::factory(10)->create();
+        User::factory(100)->create();
+        requests::factory(100)->create();
     }
 }
