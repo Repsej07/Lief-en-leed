@@ -1,3 +1,8 @@
+De test users zijn:
+Voor een normale user email:test@example.com
+pw:liedenleed
+voor een admin user email:admin@example.com
+pw:liedenleed
 # Lief-en-Leed
 
 **Automatiseringsproject voor de Lief & Leed Pot van Gemeente Almere**
