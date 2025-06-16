@@ -82,7 +82,6 @@ De exacte kosten worden bepaald op basis van een nadere analyse. Verwachte koste
 
 ## 12. Succescriteria
 
-- Minimaal 80% van de aanvragen wordt automatisch verwerkt  
 - Minimaal 50% minder administratieve handelingen  
 - Positieve gebruikerservaring bij medewerkers
 
