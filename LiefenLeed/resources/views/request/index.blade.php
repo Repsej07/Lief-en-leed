@@ -1,111 +1,119 @@
 <x-app-layout>
     <style>
-   @media (max-width: 640px) {
-  table thead {
-    display: none;
-  }
+        @media (max-width: 640px) {
+            table thead {
+                display: none;
+            }
 
-  table, tbody, tr, td {
-    display: block;
-    width: 100%;
-  }
+            table,
+            tbody,
+            tr,
+            td {
+                display: block;
+                width: 100%;
+            }
 
-  tr {
-    margin-bottom: 1rem;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.5rem;
-    background: #fff;
-    box-sizing: border-box;
-    padding: 0.5rem 0;
-  }
+            tr {
+                margin-bottom: 1rem;
+                border: 1px solid #e5e7eb;
+                border-radius: 0.5rem;
+                background: #fff;
+                box-sizing: border-box;
+                padding: 0.5rem 0;
+            }
 
-  td {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-bottom: 1px solid #e5e7eb;
-    text-align: center;
-    font-size: 0.95rem;
-    color: #374151;
-    display: block;
-    width: 100%;
-  }
+            td {
+                padding: 0.5rem 1rem;
+                border: none;
+                border-bottom: 1px solid #e5e7eb;
+                text-align: center;
+                font-size: 0.95rem;
+                color: #374151;
+                display: block;
+                width: 100%;
+            }
 
-  td:last-child {
-    border-bottom: none;
-  }
+            td:last-child {
+                border-bottom: none;
+            }
 
-  label {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 0.5rem;
-    cursor: pointer;
-    width: 100%;
-  }
+            label {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                gap: 0.5rem;
+                cursor: pointer;
+                width: 100%;
+            }
 
-  label > div.flex.items-center.flex-1 {
-    flex-direction: row !important;
-    justify-content: center !important;
-    gap: 0.75rem;
-    margin-bottom: 0.5rem;
-  }
+            label>div.flex.items-center.flex-1 {
+                flex-direction: row !important;
+                justify-content: center !important;
+                gap: 0.75rem;
+                margin-bottom: 0.5rem;
+            }
 
-  label > div.flex.items-center.flex-1 > div.h-10.w-10 {
-    margin: 0 !important;
-  }
+            label>div.flex.items-center.flex-1>div.h-10.w-10 {
+                margin: 0 !important;
+            }
 
-  /* Text elements */
-  label > div.flex.items-center.flex-1 > span.text-sm.font-medium.text-gray-900 {
-    text-align: left;
-  }
+            /* Text elements */
+            label>div.flex.items-center.flex-1>span.text-sm.font-medium.text-gray-900 {
+                text-align: left;
+            }
 
-  /* Other info divs */
-  label > div.flex-1.text-sm.text-gray-700 {
-    width: 100%;
-    text-align: center;
-    margin-bottom: 0.5rem;
-  }
+            /* Other info divs */
+            label>div.flex-1.text-sm.text-gray-700 {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 0.5rem;
+            }
 
-  /* Form buttons container */
-  label > div.flex-1:last-child {
-    display: flex !important;
-    justify-content: center !important;
-    gap: 0.5rem;
-    width: auto !important;
-  }
+            /* Form buttons container */
+            label>div.flex-1:last-child {
+                display: flex !important;
+                justify-content: center !important;
+                gap: 0.5rem;
+                width: auto !important;
+            }
 
-  /* Make buttons smaller and inline on mobile */
-  form.inline {
-    flex: 1 1 auto;
-  }
+            /* Make buttons smaller and inline on mobile */
+            form.inline {
+                flex: 1 1 auto;
+            }
 
-  form.inline button {
-    width: 100%;
-    max-width: 120px;
-    font-size: 0.9rem;
-    padding: 0.4rem 0.75rem;
-  }
+            form.inline button {
+                width: 100%;
+                max-width: 120px;
+                font-size: 0.9rem;
+                padding: 0.4rem 0.75rem;
+            }
 
-  /* Show/hide details below each row when checkbox toggled */
-  .peer-checked ~ div {
-    display: block !important;
-  }
-  .peer ~ div {
-    display: none;
-  }
+            /* Show/hide details below each row when checkbox toggled */
+            .peer-checked~div {
+                display: block !important;
+            }
 
-  /* Style the expanded detail box */
-  .peer-checked ~ div {
-    background-color: #d1fae5; /* green-50 */
-    border-top: 1px solid #bbf7d0; /* green-100 */
-    padding: 0.75rem 1rem;
-    color: #065f46; /* green-800 */
-    font-size: 0.9rem;
-    border-radius: 0 0 0.5rem 0.5rem;
-    text-align: left;
-  }
-}/*i did the mobile stylings with the help of AI because of not enough time*/
+            .peer~div {
+                display: none;
+            }
 
+            /* Style the expanded detail box */
+            .peer-checked~div {
+                background-color: #d1fae5;
+                /* green-50 */
+                border-top: 1px solid #bbf7d0;
+                /* green-100 */
+                padding: 0.75rem 1rem;
+                color: #065f46;
+                /* green-800 */
+                font-size: 0.9rem;
+                border-radius: 0 0 0.5rem 0.5rem;
+                text-align: left;
+            }
+        }
+
+        /*i did the mobile stylings with the help of AI because of not enough time*/
     </style>
     <div class="mt-12 bg-white shadow-xl rounded-2xl px-10 pt-8 pb-12 mb-8 max-w-6xl mx-auto">
         <div class="flex flex-col items-center mb-6 md:flex-row md:justify-between md:items-center">
