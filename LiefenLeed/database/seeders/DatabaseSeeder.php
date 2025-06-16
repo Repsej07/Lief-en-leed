@@ -12,13 +12,23 @@ class DatabaseSeeder extends Seeder
     {
         User::factory()->create([
             'Medewerker' => 1,
-            'Roepnaam' => 'Test',
-            'Voorvoegsel' => 'de',
-            'Achternaam' => 'Tester',
-            'email' => 'test@example.com',
+            'Roepnaam' => 'admin',
+            'Voorvoegsel' => '',
+            'Achternaam' => 'user',
+            'email' => 'admin@example.com',
             'password' => 'liedenleed',
             'Geboortedatum' => '2000-01-01',
             'is_admin' => true,
+        ]);
+        User::factory()->create([
+            'Medewerker' => 2,
+            'Roepnaam' => 'test',
+            'Voorvoegsel' => '',
+            'Achternaam' => 'user',
+            'email' => 'test@example.com',
+            'password' => 'liedenleed',
+            'Geboortedatum' => '2000-01-01',
+            'is_admin' => false,
         ]);
 
         User::factory(10)->create();
